@@ -7,7 +7,7 @@ First clone
   
     git submodule update --init --recursive
   
-    git config --global alias.update '!git pull && git submodule update --init --recursive'
+    git config --global alias.update '!git pull && git submodule update --init --recursive && git submodule update --remote'
   
 In order to update the repository with the submodules:
 
