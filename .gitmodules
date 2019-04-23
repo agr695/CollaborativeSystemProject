@@ -1,0 +1,3 @@
+[submodule "src/PowerLineThesis"]
+	path = src/PowerLineThesis
+	url = https://github.com/OBSchofieldUK/PowerLineThesis.git
