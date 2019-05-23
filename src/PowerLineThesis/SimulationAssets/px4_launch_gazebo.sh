@@ -14,7 +14,7 @@ export PX4_HOME_LON=10.46091
 
 if [[ $1 = "" ]]; then
 # change this to a location of your firmware! must use V1.8.2 of PX4 Firmware
-FIRMDIR="/home/agr695/src/Firmware/"
+FIRMDIR="~/src/Firmware/"
 else
 FIRMDIR=$1
 fi
