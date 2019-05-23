@@ -1,0 +1,66 @@
+{
+    "Version":1,
+    "AirSimRecording":{
+        "Recording_folder":"/home/agr695/Documents/SDU_lectures/semester2/collaborative_system/project/AirSimFlightRecording2/",
+        "SlowDownFactor":1.0
+    },
+    "Image Processing Node":{
+        "Debug":false,
+        "Show Incoming Image":true,
+        "Show Final Image":true,
+        "Press to continue":false
+    },
+    "Camera":{
+        "Pixel width":1280,
+        "Pixel height":720,
+        "Chip size(mm)":0.0,
+        "Focal length(mm)":0.0,
+        "FOV":60.0,
+        "Camera Position":{
+            "X":0.0,
+            "Y":0.0,
+            "Z":0.0,
+            "Roll":0.0,
+            "Pitch":0.0,
+            "Yaw":0.0
+        }
+    },
+    "PLineD":{
+        "Canny":{
+            "Filter size":3,
+            "Treshold low":36,
+            "Treshold high":150
+        },
+        "Segment Cut":{
+            "Min length":15,
+            "Max angle":30.0,
+            "Step size":5
+        },
+        "Covariance ratio":600,
+        "Segment grouping":{
+            "Min length finnished":400,
+            "Min length start":100,
+            "Max angle difference":5.0,
+            "Max line distance":10
+        },
+        "Parrallel line filter":{
+            "Use filter":false,
+            "Max angle":5.0
+        },
+        "Debug":false
+    },
+    "Lidar":{
+        "Number of Segments":8,
+        "FOV vertical":0.3,
+        "FOV horizontal":6.0,
+        "Lidar Position":{
+            "X":0.0,
+            "Y":0.0,
+            "Z":5.0,
+            "Roll":0.0,
+            "Pitch":0.0,
+            "Yaw":0.0
+        }
+    }
+}
+ 
