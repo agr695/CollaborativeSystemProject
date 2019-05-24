@@ -161,10 +161,10 @@ void image_handler(sensor_msgs::Image msg){
         //cv::resize(cv_ptr->image,img,cv::Size(1920,1080));      //Resize To 1920x1080
         gotImage = true;
 
-        if(setting_node.show_incomming_image) {
-            cv::imshow("TestImage",img);
-            cv::waitKey(1);
-        }
+//        if(setting_node.show_incomming_image) {
+//            cv::imshow("TestImage",img);
+//            cv::waitKey(1);
+//        }
     }
 }
 void estimate_handler(inspec_msg::line2d_array msg){
@@ -263,7 +263,7 @@ int main(int argc, char* argv[]){
     settings::read(setting_camera);
 
     estimate_sub = nh->subscribe("/inspec/daq/Estimator/lines2d",10,estimate_handler);
-    image_sub = nh->subscribe(setting_node.Image_topic.c_str(),1,image_handler);
+    image_sub = nh->subscribe("/iris/camera/image_raw",1,image_handler);
     line_pub = nh->advertise<inspec_msg::line2d_array>("/inspec/daq/linedetector/lines2d",1);
     gotImage_pub = nh->advertise<inspec_msg::head>("/inspec/daq/linedetector/gotImage",1);
 
@@ -277,10 +277,10 @@ int main(int argc, char* argv[]){
         ShowImage("GroupSeg",BLACK,610,610);
         if(setting_PLineD.Parrallel_active) ShowImage("ParLines",BLACK,1210,610);
         ShowImage("PLineD",BLACK,1210,610);
-    }else{
+    }/*else{
         if(setting_node.show_incomming_image) ShowImage("TestImage",BLACK);
         if(setting_node.show_final_image) ShowImage("PLineD",BLACK,50,600);
-    }
+    }*/
     if(DEBUG_PROXIMITY_FILTER_){
         ShowImage("Proximity",BLACK,610,610);
     }
@@ -390,7 +390,7 @@ int main(int argc, char* argv[]){
                 }
                 //imwrite("LineMatch"+to_string(loop_num)+".jpg", out );
 
-                cv::imshow("PLineD",out);
+//                cv::imshow("PLineD",out);
             }
             if(!setting_node.press_to_continue){ 
                 cv::waitKey(1);

@@ -8,11 +8,12 @@
         "Debug":false,
         "Show Incoming Image":true,
         "Show Final Image":true,
-        "Press to continue":false
+        "Press to continue":false,
+	"Image_topic":"/iris/camera/image_raw"
     },
     "Camera":{
-        "Pixel width":1280,
-        "Pixel height":720,
+        "Pixel width":640,
+        "Pixel height":480,
         "Chip size(mm)":0.0,
         "Focal length(mm)":0.0,
         "FOV":60.0,

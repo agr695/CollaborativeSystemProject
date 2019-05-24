@@ -1,0 +1,6 @@
+<launch>
+    <node name="px4_gazebo_launch" pkg="estimator3d" type="px4_launch_gazebo.sh"/>
+    <node name="mavROS_launch" pkg="estimator3d" type="launch_mavROS.sh"/>
+    <!--node name="keep_offboard" pkg="keep_offboard" type="offboard_mode.py" /-->
+    <!--include file="$(find estimator3d)/launch/system.launch"/-->
+</launch>
