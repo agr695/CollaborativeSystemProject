@@ -601,7 +601,7 @@
       <pose frame=''>0.04 0 0 0 -1.5707 0</pose>
     </model>
     
-        <model name='sonar'>
+        <model name='sonar_front'>
       <link name='link'>
         <inertial>
           <pose frame=''>0 0 0 0 -0 0</pose>
@@ -648,8 +648,8 @@
           
           <plugin name='laser' filename='libRayPlugin.so'/>
           <plugin name='gazebo_ros_head_rplidar_controller' filename='libgazebo_ros_laser.so'>
-            <topicName>iris/sonar/scan</topicName>
-            <frameName>sonar_link</frameName>
+            <topicName>iris/sonar_front/scan</topicName>
+            <frameName>sonar_front_link</frameName>
           </plugin>
           <always_on>1</always_on>
           <update_rate>5.5</update_rate>
@@ -659,7 +659,69 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-      <pose frame=''>0.1 0 0 0 -0 0</pose>
+      <pose frame=''>0.08 0 0 0 -0 0</pose>
+    </model>
+    
+    
+            <model name='sonar_left'>
+      <link name='link'>
+        <inertial>
+          <pose frame=''>0 0 0 0 -0 0</pose>
+          <mass>0.19</mass>
+          <inertia>
+            <ixx>4.15e-06</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>2.407e-06</iyy>
+            <iyz>0</iyz>
+            <izz>2.407e-06</izz>
+          </inertia>
+        </inertial>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.01 0.01 0.01</size>
+            </box>
+          </geometry>
+        </visual>
+        
+        <sensor name='laser' type='ray'>
+          <ray>
+            <scan>
+              <horizontal>
+                <samples>1</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.0</min_angle>
+                <max_angle>0.0</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>1</samples>
+                <resolution>1</resolution>
+                <min_angle>-0.0</min_angle>
+                <max_angle>0.0</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>0.2</min>
+              <max>2.5</max>
+              <resolution>0.05</resolution>
+            </range>	  
+          </ray>
+          
+          <plugin name='laser' filename='libRayPlugin.so'/>
+          <plugin name='gazebo_ros_head_rplidar_controller' filename='libgazebo_ros_laser.so'>
+            <topicName>iris/sonar_left/scan</topicName>
+            <frameName>sonar_left_link</frameName>
+          </plugin>
+          <always_on>1</always_on>
+          <update_rate>5.5</update_rate>
+          <visualize>1</visualize>
+        </sensor>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose frame=''>0 0.04 -0.02 0 -0 1.5707</pose>
     </model>
     
 
@@ -733,7 +795,7 @@
     </joint>
         <joint name='base_link_JOINT_2' type='fixed'>
       <parent>base_link</parent>
-      <child>sonar::link</child>
+      <child>sonar_front::link</child>
       <pose frame=''>0 0 0 0 -0 0</pose>
       <physics>
         <ode>
@@ -748,6 +810,25 @@
         </ode>
       </physics>
     </joint>
+    
+    <joint name='base_link_JOINT_3' type='fixed'>
+      <parent>base_link</parent>
+      <child>sonar_left::link</child>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <physics>
+        <ode>
+          <limit>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </limit>
+          <suspension>
+            <cfm>0</cfm>
+            <erp>0.2</erp>
+          </suspension>
+        </ode>
+      </physics>
+    </joint>
+    
     <joint name='rotor_0_joint' type='revolute'>
       <parent>base_link</parent>
       <child>rotor_0</child>
