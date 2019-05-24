@@ -32,5 +32,5 @@ export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
 
 # # launch basic PX4 SITL
-roslaunch px4 msc_posix.launch #&
+roslaunch px4 msc_posix_lidar.launch #&
 
