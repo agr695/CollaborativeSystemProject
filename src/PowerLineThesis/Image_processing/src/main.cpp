@@ -392,7 +392,7 @@ int main(int argc, char* argv[]){
 
 //                cv::imshow("PLineD",out);
             }
-            if(!setting_node.press_to_continue){ 
+            if(!setting_node.press_to_continue){
                 cv::waitKey(1);
             }else{
                 cv::waitKey(0);
