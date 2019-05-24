@@ -1,7 +1,7 @@
 {
     "Version":1,
     "AirSimRecording":{
-        "Recording_folder":"/home/agr695/Documents/SDU_lectures/semester2/collaborative_system/project/AirSimFlightRecording2/",
+        "Recording_folder":"/home/jannes/collaborating_systems_project/src/PowerLineThesis/AirSimFlightRecording2/",
         "SlowDownFactor":1.0
     },
     "Image Processing Node":{
