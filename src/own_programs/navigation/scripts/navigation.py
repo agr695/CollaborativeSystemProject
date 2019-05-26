@@ -19,11 +19,12 @@ class navigation():
         self.relative_yaw = 0
 
         self.dt = 0.3
+        self.wait_time = 0.5
 
         self.local_pose = PoseStamped()     
 
-        self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', LaserScan, self.front_sonar)
-        self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', LaserScan, self.left_sonar)
+        self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', LaserScan, self.front_sonar, queue_size=1)
+        self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', LaserScan, self.left_sonar, queue_size=1)
 
         self.setMode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 
@@ -34,8 +35,20 @@ class navigation():
 
     def get_local_data(self, msg):
         self.local_pose = msg
-        self.follow_line()
         self.setMode(0,'OFFBOARD')
+
+        if self.mode =="follow":
+            self.follow_line()
+        elif self.mode == "avoid":
+            self.pub_avoid_msg("side")
+        elif self.mode == "corner":
+            self.pub_avoid_msg("straight")
+        elif self.mode == "next_to_tower":
+            self.pub_avoid_msg("straight")
+        elif self.mode == "go_back":
+            self.pub_avoid_msg("left")
+        print self.mode
+
 
     def get_target_data(self, msg):
         self.relative_x = msg.x
@@ -44,27 +57,33 @@ class navigation():
         self.relative_yaw = msg.Yaw
 
     def front_sonar(self, msg):
-        distance = msg.ranges[0]
+        distance = min(msg.ranges)
 
         if distance < 1:                    #we are close to tower so move to side
             self.mode = "avoid"
-            self.pub_avoid_msg("side")
+            rospy.sleep(self.wait_time)
+            # self.pub_avoid_msg("side")
         elif self.mode == "avoid":          #we don't detect anything in front so we are in corner, move straight
             self.mode = "corner"
-            self.pub_avoid_msg("straight")
+            rospy.sleep(self.wait_time)
+            # self.pub_avoid_msg("straight")
     
     def left_sonar(self, msg):
-        distance = msg.ranges[0]
+        distance = min(msg.ranges)
 
         if distance < 5:                    #we are next to tower so go straight
-            self.mode = "next_to_tower"     
+            self.mode = "next_to_tower"
+            rospy.sleep(self.wait_time)
         elif self.mode == "next_to_tower":  #we are past the tower so try to follow the line again
+            print "aaa"
+            self.mode = "go_back"
+            rospy.sleep(self.wait_time)
             self.mode = "follow"
 
-        if self.mode == "corner":           
-            self.pub_avoid_msg("straight")
-        elif self.mode == "next_to_tower":
-            self.pub_avoid_msg("straight")
+        # if self.mode == "corner":
+        #     self.pub_avoid_msg("straight")
+        # elif self.mode == "next_to_tower":
+        #     self.pub_avoid_msg("straight")
 
 
     # def follow_line(self):
@@ -85,9 +104,12 @@ class navigation():
             target_pose.twist.linear.y = -0.3
         elif direction == "straight":
             target_pose.twist.linear.x = 0.3
+        elif direction == "left":
+            target_pose.twist.linear.y = 0.3
+
 
         self.command_pub.publish(target_pose)
-        rospy.sleep(1)
+
 
 
     def follow_line(self):
