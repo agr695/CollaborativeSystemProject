@@ -6,6 +6,7 @@ from inspec_msg.msg import line_control_info
 from mavros_msgs.msg import PositionTarget
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from mavros_msgs.srv import SetMode
+from sensor_msgs.msg import LaserScan
 
 class navigation():
     def __init__(self):
@@ -47,10 +48,10 @@ class navigation():
 
         if distance < 1:                    #we are close to tower so move to side
             self.mode = "avoid"
-            pub_avoid_msg("side")
+            self.pub_avoid_msg("side")
         elif self.mode == "avoid":          #we don't detect anything in front so we are in corner, move straight
             self.mode = "corner"
-            pub_avoid_msg("straight")
+            self.pub_avoid_msg("straight")
     
     def left_sonar(self, msg):
         distance = msg.ranges[0]
