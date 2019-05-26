@@ -19,5 +19,6 @@ cp $CWD/iris_msc . -f -r
 echo "installing world."
 cd ../worlds
 cp $CWD/msc_world.world . -f -r
+cp $CWD/msc_world_modified.world . -f -r
 
 echo "done."

@@ -5,6 +5,7 @@ import rospy
 from inspec_msg.msg import line_control_info
 from mavros_msgs.msg import PositionTarget
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
+from mavros_msgs.srv import SetMode
 
 class navigation():
     def __init__(self):
@@ -23,6 +24,8 @@ class navigation():
         self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', LaserScan, self.front_sonar)
         self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', LaserScan, self.left_sonar)
 
+        self.setMode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
+
         self.target_sub = rospy.Subscriber('/onboard/setpoint/inspect', line_control_info, self.get_target_data, queue_size=1)
         self.local_sub = rospy.Subscriber('/mavros/local_position/pose', PoseStamped, self.get_local_data, queue_size=1)
         self.command_pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size=1)
@@ -31,6 +34,7 @@ class navigation():
     def get_local_data(self, msg):
         self.local_pose = msg
         self.follow_line()
+        self.setMode(0,'OFFBOARD')
 
     def get_target_data(self, msg):
         self.relative_x = msg.x
@@ -82,6 +86,7 @@ class navigation():
             target_pose.twist.linear.x = 0.3
 
         self.command_pub.publish(target_pose)
+        rospy.sleep(1)
 
 
     def follow_line(self):

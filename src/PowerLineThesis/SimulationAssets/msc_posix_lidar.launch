@@ -12,7 +12,7 @@
     <!-- vehicle model and world -->
     <arg name="est" default="ekf2"/>
     <arg name="vehicle" default="irislidar_msc"/>
-    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/msc_world.world"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/msc_world_modified.world"/>
     <arg name="sdf" default="$(find mavlink_sitl_gazebo)/models/$(arg vehicle)/model.sdf"/>
     <arg name="rcS" default="$(find px4)/posix-configs/SITL/init/$(arg est)/iris"/>
     <!-- gazebo configs -->
