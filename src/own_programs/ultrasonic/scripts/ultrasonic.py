@@ -1,12 +1,16 @@
 #!/usr/bin/python
 
-# import rospy
-# import std_msgs.msg
+import rospy
+from std_msgs.msg import Int32
 import smbus
 import time
 
 class UltrasonicNode:
     def __init__(self, bus=1, address=0x70, reg_mode=0x00, reg_high_byte=0x02, reg_low_byte=0x03):
+        rospy.init_node('UltrasonicNode')
+
+        self.distance_pub = rospy.Publisher("/ultrasonic/distance", Int32, queue_size=1)
+
         self.bus = bus = smbus.SMBus(bus)
         self.device_address = address
         self.device_reg_mode = reg_mode
@@ -15,7 +19,6 @@ class UltrasonicNode:
 
     def SetMode(self, mode):
         self.bus.write_byte_data(self.device_address, self.device_reg_mode, mode)
-        time.sleep(0.07)
 
     def ReadData(self):
         high = self.bus.read_word_data(self.device_address, self.device_reg_high_byte)
@@ -25,8 +28,11 @@ class UltrasonicNode:
         lh = int(bin(low >> 15), 2)
         hl = int(bin(high&0b11),2)
 
-        d = hl * 255 + lh * 128 + ll
-        return d
+        distance = hl * 255 + lh * 128 + ll
+        d = Int32()
+        d.data = distance
+        self.distance_pub.publish(d)
+        return distance
 
     def GetMinRange(self):
         high = self.bus.read_word_data(self.device_address, 0x04)
@@ -39,10 +45,15 @@ class UltrasonicNode:
         d = hl * 255 + lh * 128 + ll
         return d
 
+
 if __name__ == '__main__':
     ultrasonic = UltrasonicNode()
-    while True:
-        ultrasonic.SetMode(0x51)
-        print ultrasonic.ReadData()
-        print ultrasonic.GetMinRange()
-        time.sleep(1)
+    # while True:
+    try:
+        while not rospy.is_shutdown():
+            rate = rospy.Rate(10)
+            ultrasonic.SetMode(0x51)
+            ultrasonic.ReadData()
+            rate.sleep()
+    except KeyboardInterrupt:
+        print 'shutting down'
