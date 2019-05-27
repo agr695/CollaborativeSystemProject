@@ -6,10 +6,10 @@ import smbus
 import time
 
 class UltrasonicNode:
-    def __init__(self, bus=1, address=0x70, reg_mode=0x00, reg_high_byte=0x02, reg_low_byte=0x03):
+    def __init__(self, bus=1, address=0x70, reg_mode=0x00, reg_high_byte=0x02, reg_low_byte=0x03, topic_name="/sonar_front/scan"):
         rospy.init_node('UltrasonicNode')
 
-        self.distance_pub = rospy.Publisher("/ultrasonic/distance", Int32, queue_size=1)
+        self.distance_pub = rospy.Publisher(topic_name, Int32, queue_size=1)
 
         self.bus = bus = smbus.SMBus(bus)
         self.device_address = address
@@ -47,13 +47,18 @@ class UltrasonicNode:
 
 
 if __name__ == '__main__':
-    ultrasonic = UltrasonicNode()
-    # while True:
+    ultrasonic_front = UltrasonicNode(address=0x70, topic_name="/sonar_front/scan")
+    ultrasonic_left = UltrasonicNode(address=0x72, topic_name="/sonar_left/scan")
+    rate_read = rospy.Rate(10)
+    rate_execution = rospy.Rate(100)
+
     try:
         while not rospy.is_shutdown():
-            rate = rospy.Rate(10)
-            ultrasonic.SetMode(0x51)
-            ultrasonic.ReadData()
-            rate.sleep()
+            ultrasonic_front.SetMode(0x51)
+            ultrasonic_left.SetMode(0x51)
+            print ultrasonic_front.ReadData()
+            rate_read.sleep()
+            print ultrasonic_left.ReadData()
+            rate_execution.sleep()
     except KeyboardInterrupt:
         print 'shutting down'
