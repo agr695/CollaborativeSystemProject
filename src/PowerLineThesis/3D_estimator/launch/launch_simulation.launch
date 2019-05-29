@@ -1,6 +1,9 @@
 <launch>
-    <node name="px4_gazebo_launch" pkg="estimator3d" type="px4_launch_gazebo.sh"/>
     <node name="mavROS_launch" pkg="estimator3d" type="launch_mavROS.sh"/>
-    <!--node name="keep_offboard" pkg="keep_offboard" type="offboard_mode.py" /-->
-    <!--include file="$(find estimator3d)/launch/system.launch"/-->
+    <include file="$(find image_aquisation)/launch/Webcam.launch"/>
+    <include file="$(find estimator3d)/launch/system.launch"/>
+    <node name="ultrasonic" pkg="ultrasonic" type="ultrasonic.py" />
+    <remap from="/iris/sonar_front/scan" to="/sonar_front/scan"/>
+    <remap from="/iris/sonar_left/scan" to="/sonar_left/scan"/>
+    <node name="navigation" pkg="navigation" type="navigation.py" output="screen" />
 </launch>

@@ -68,7 +68,7 @@ bool between(cv::Point2f point, cv::Point2f lim1, cv::Point2f lim2){
         lim1 = lim2;
         lim2 = h;
     }
-    return lim1.x < point.x && point.x < lim2.x; 
+    return lim1.x < point.x && point.x < lim2.x;
 }
 
 void Lidar_data_handler(inspec_msg::lidardat msg){
@@ -80,7 +80,7 @@ void Line_handler(inspec_msg::line2d_array msg){
     cv::Mat img(camera_setting.pixel_height, camera_setting.pixel_width, CV_8UC3, cv::Scalar(0,0,0));
     if(!incoming_data.empty()){
         double last_dif = msg.header.stamp.toSec() - incoming_data.front().header.stamp.toSec();
-        
+
         // ######################## Syncronise Lidar & Image data #######################
         for(uint i = 1; i < incoming_data.size();i++){
             double dif = msg.header.stamp.toSec() - incoming_data[i].header.stamp.toSec();
@@ -152,7 +152,7 @@ void Line_handler(inspec_msg::line2d_array msg){
             Matched_pub.publish(match_array);
         }
     }
-    
+
     cv::imshow("test",img);
     cv::waitKey(1);
 }
@@ -173,7 +173,7 @@ int main(int argc, char **argv){
     cout << "####### Lidar Position #######" << endl;
     cout << camTlidar.P() << endl;
     rw::math::RPY<> a(camTlidar.R());
-    cout << "RPY: " << math::rad2deg(a[0]) << ", " << math::rad2deg(a[1]) << ", " << math::rad2deg(a[2]) << endl;  
+    cout << "RPY: " << math::rad2deg(a[0]) << ", " << math::rad2deg(a[1]) << ", " << math::rad2deg(a[2]) << endl;
 
 
 
@@ -182,9 +182,9 @@ int main(int argc, char **argv){
 
     Matched_pub = nh.advertise<inspec_msg::matched_lidar_data_array>("/inspec/daq/lidarDat/Matched",1);
 
-    cv::Mat BLACK(camera_setting.pixel_height, camera_setting.pixel_width, CV_8UC3, cv::Scalar(0,0,0));
-    ShowImage("test",BLACK);
-    cv::waitKey(1);
+    // cv::Mat BLACK(camera_setting.pixel_height, camera_setting.pixel_width, CV_8UC3, cv::Scalar(0,0,0));
+    // ShowImage("test",BLACK);
+    // cv::waitKey(1);
     ros::spin();
 
 

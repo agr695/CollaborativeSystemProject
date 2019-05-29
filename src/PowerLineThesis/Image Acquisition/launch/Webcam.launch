@@ -1,12 +1,12 @@
 <launch>
-  <arg name="video" default="1"/>
+  <arg name="video" default="0"/>
   <include file="$(find video_stream_opencv)/launch/camera.launch" >
         <!-- node name and ros graph name -->
         <arg name="camera_name" value="webcam" />
-        
+
         <!-- means video device 0, /dev/video0 -->
         <arg name="video_stream_provider" value="$(arg video)" />
-        
+
         <!-- set camera fps to (if the device allows) -->
         <arg name="set_camera_fps" value="30"/>
         <!-- set buffer queue size of frame capturing to -->
@@ -24,7 +24,7 @@
         <arg name="flip_vertical" value="false" />
         <!-- visualize on an image_view window the stream generated -->
         <arg name="visualize" value="false" />
-        
+
         <!-- set width -->
         <arg name="width" value="1920" />
         <!-- set height -->

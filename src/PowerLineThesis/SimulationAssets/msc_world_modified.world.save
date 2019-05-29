@@ -125,7 +125,7 @@
     </physics>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose frame=''>29.335 -19.8952 64.641 0 1.0858 2.09199</pose>
+        <pose frame=''>-2.90071 -47.4755 103.716 0 1.1978 1.532</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
@@ -147,49 +147,49 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <state world_name='default'>
-      <sim_time>870 692000000</sim_time>
-      <real_time>155 515087486</real_time>
-      <wall_time>1558864293 68224791</wall_time>
-      <iterations>38665</iterations>
+      <sim_time>716 32000000</sim_time>
+      <real_time>133 75756998</real_time>
+      <wall_time>1558809421 660025574</wall_time>
+      <iterations>31382</iterations>
       <model name='Powerline1'>
-        <pose frame=''>0 0 0 0 -0 0.5</pose>
+        <pose frame=''>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>-13.1637 -7.19138 7 0 -0 0.5</pose>
+          <pose frame=''>-15 0 7 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='link_0'>
-          <pose frame=''>0 0 14.5 0 -1.56987 0.5</pose>
+          <pose frame=''>0 0 14.5 0 -1.56987 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='link_clone'>
-          <pose frame=''>13.1637 7.19138 7 1e-05 -0 0.5</pose>
+          <pose frame=''>15 0 7 1e-05 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
       <model name='Powerline1_clone'>
-        <pose frame=''>26 14 0 0 -0 0.5</pose>
+        <pose frame=''>30.429 0.038389 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose frame=''>12.8363 6.80862 7 0 -0 0.5</pose>
+          <pose frame=''>15.429 0.038389 7 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='link_0'>
-          <pose frame=''>26 14 14.5 0 -1.56987 0.5</pose>
+          <pose frame=''>30.429 0.038389 14.5 0 -1.56987 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='link_clone'>
-          <pose frame=''>39.1637 21.1914 7 1e-05 -0 0.5</pose>
+          <pose frame=''>45.429 0.038389 7 1e-05 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -237,6 +237,7 @@
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
+
       <light name='sun'>
         <pose frame=''>0 0 10 0 -0 0</pose>
       </light>
@@ -589,6 +590,7 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose frame=''>0 20 0 0 -0 0</pose>
     </model>
+
     <model name='Powerline1_clone'>
       <link name='link'>
         <inertial>
@@ -1285,8 +1287,5 @@
       <allow_auto_disable>1</allow_auto_disable>
       <pose frame=''>-30.5994 -0.069392 0 0 -0 0</pose>
     </model>
-    <audio>
-      <device>default</device>
-    </audio>
   </world>
 </sdf>

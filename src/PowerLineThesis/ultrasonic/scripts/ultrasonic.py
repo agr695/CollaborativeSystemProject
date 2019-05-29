@@ -17,30 +17,21 @@ class UltrasonicNode:
         self.device_reg_high_byte = reg_high_byte
         self.device_reg_low_byte = reg_low_byte
 
-        self.lastread = 0
-
     def SetMode(self, mode):
         self.bus.write_byte_data(self.device_address, self.device_reg_mode, mode)
 
     def ReadData(self):
-        try:
-            high = self.bus.read_word_data(self.device_address, self.device_reg_high_byte)
-            low = self.bus.read_word_data(self.device_address, self.device_reg_low_byte)
-            ll = int(bin(low & 0b1111111), 2)
-            lh = int(bin(low >> 15), 2)
-            hl = int(bin(high&0b11),2)
+        high = self.bus.read_word_data(self.device_address, self.device_reg_high_byte)
+        low = self.bus.read_word_data(self.device_address, self.device_reg_low_byte)
 
-            distance = hl * 255 + lh * 128 + ll
+        ll = int(bin(low & 0b1111111), 2)
+        lh = int(bin(low >> 15), 2)
+        hl = int(bin(high&0b11),2)
 
-            self.lastread = distance
-        except:
-            distance = self.lastread
-
-        if distance != 0:
-            d = Int32()
-            d.data = distance
-            self.distance_pub.publish(d)
-
+        distance = hl * 255 + lh * 128 + ll
+        d = Int32()
+        d.data = distance
+        self.distance_pub.publish(d)
         return distance
 
     def GetMinRange(self):
@@ -59,15 +50,15 @@ if __name__ == '__main__':
     ultrasonic_front = UltrasonicNode(address=0x70, topic_name="/sonar_front/scan")
     ultrasonic_left = UltrasonicNode(address=0x72, topic_name="/sonar_left/scan")
     rate_read = rospy.Rate(10)
-    rate_execution = rospy.Rate(10)
+    rate_execution = rospy.Rate(100)
 
     try:
         while not rospy.is_shutdown():
             ultrasonic_front.SetMode(0x51)
             ultrasonic_left.SetMode(0x51)
-            ultrasonic_front.ReadData()
+            print ultrasonic_front.ReadData()
             rate_read.sleep()
-            ultrasonic_left.ReadData()
+            print ultrasonic_left.ReadData()
             rate_execution.sleep()
     except KeyboardInterrupt:
         print 'shutting down'

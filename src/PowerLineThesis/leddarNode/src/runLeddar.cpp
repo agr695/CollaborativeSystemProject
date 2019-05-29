@@ -66,10 +66,10 @@ int main( int argc, char *argv[] )
     LeddarConnection::LdConnectionInfo  *lConnectionInfo = nullptr;
 
     std::vector<LeddarConnection::LdConnectionInfo *> lConnList =  LeddarConnection::LdLibModbusSerial::GetDeviceList();
-    
+
 
     for (size_t i = 0; i < lConnList.size(); i++)
-    {   
+    {
         if (lConnList[i]->GetDisplayName() == LEDDAR_DEV){
             lConnectionInfo = lConnList[i];
             break;
@@ -87,7 +87,7 @@ int main( int argc, char *argv[] )
     lSensor->GetConstants();
     lSensor->GetConfig();
     lSensor->SetDataMask(LeddarDevice::LdSensor::DM_ALL);   //Set mask to read data
-    
+
     // display info on screen
     while(!ros::isShuttingDown()){
 
@@ -108,17 +108,17 @@ int main( int argc, char *argv[] )
             // double Distances[8] = {-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0};
             // double Amplitude[8] = {-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0};
 
-            for( uint32_t i = 0; i < lResultEchoes->GetEchoCount(); ++i ){           
+            for( uint32_t i = 0; i < lResultEchoes->GetEchoCount(); ++i ){
                 int idx = lEchoes[i].mChannelIndex;
                 Distances[idx] = (double) lEchoes[idx].mDistance / (double) lDistanceScale;
                 Amplitudes[idx] = (double) lEchoes[idx].mAmplitude / (double) lAmplitudeScale;
             }
-            
+
             inspec_msg::head msgHead;
-            
+
             msgHead.seq = count;
             msgHead.stamp = ros::Time::now();
-            
+
             msg.header = msgHead;
             msg.distance = Distances;
             msg.amplitude = Amplitudes;
@@ -137,8 +137,6 @@ int main( int argc, char *argv[] )
     lSensor->SetDataMask( LeddarDevice::LdSensor::DM_NONE );
     lSensor->Disconnect();
     delete lSensor;
-    
+
     return 0;
 }
-
-

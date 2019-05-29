@@ -7,7 +7,6 @@ from mavros_msgs.msg import PositionTarget
 from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from mavros_msgs.srv import SetMode
 from sensor_msgs.msg import LaserScan
-from std_msgs.msg import Int32
 
 class navigation():
     def __init__(self):
@@ -24,13 +23,10 @@ class navigation():
         self.Pyaw = 0.3
         self.wait_time = 0.5
 
-        self.local_pose = PoseStamped()
+        self.local_pose = PoseStamped()     
 
-        # self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', LaserScan, self.front_sonar, queue_size=1)
-        # self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', LaserScan, self.left_sonar, queue_size=1)
-
-        self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', Int32, self.front_sonar, queue_size=1)
-        self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', Int32, self.left_sonar, queue_size=1)
+        self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', LaserScan, self.front_sonar, queue_size=1)
+        self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', LaserScan, self.left_sonar, queue_size=1)
 
         self.setMode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 
@@ -52,7 +48,6 @@ class navigation():
             self.pub_avoid_msg("straight")
         elif self.mode == "go_back":
             self.pub_avoid_msg("left")
-        print self.mode
 
 
     def get_target_data(self, msg):
@@ -62,8 +57,7 @@ class navigation():
         self.relative_yaw = msg.Yaw
 
     def front_sonar(self, msg):
-        distance = msg.data/100.0
-        print distance
+        distance = min(msg.ranges)
 
         if distance < 1:                    #we are close to tower so move to side
             self.mode = "avoid"
@@ -73,16 +67,16 @@ class navigation():
             rospy.sleep(self.wait_time)
 
     def left_sonar(self, msg):
-        distance = msg.data/100.0
+        distance = min(msg.ranges)
 
-        if distance < 2:                    #we are next to tower so go straight
+        if distance < 5:                    #we are next to tower so go straight
             self.mode = "next_to_tower"
             rospy.sleep(self.wait_time)
         elif self.mode == "next_to_tower":  #we are past the tower so try to follow the line again
             self.mode = "go_back"
             rospy.sleep(self.wait_time)
             self.mode = "follow"
-
+    
     def pub_avoid_msg(self, direction):
         target_pose = TwistStamped()
         target_pose.header.frame_id = "FRAME_BODY_OFFSET_NED"
@@ -102,15 +96,15 @@ class navigation():
             target_pose = TwistStamped()
             target_pose.twist.linear.x = 0.3
             target_pose.twist.linear.y = -self.relative_y * self.Py
-            target_pose.twist.linear.z = -(0.5 - self.relative_z) * self.Pz
+            target_pose.twist.linear.z = -(3 - self.relative_z) * self.Pz
             target_pose.header.frame_id = "FRAME_BODY_OFFSET_NED"  # realtive to body frame
 
             target_pose.twist.angular.z = -self.relative_yaw * self.Pyaw
 
             self.command_pub.publish(target_pose)
 
-
-
+        
+        
 
 
 if __name__ == "__main__":

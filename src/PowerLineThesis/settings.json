@@ -12,8 +12,8 @@
 	"Image_topic":"/iris/camera/image_raw"
     },
     "Camera":{
-        "Pixel width":640,
-        "Pixel height":480,
+        "Pixel width":1920,
+        "Pixel height":1080,
         "Chip size(mm)":0.0,
         "Focal length(mm)":0.0,
         "FOV":60.0,
@@ -64,4 +64,3 @@
         }
     }
 }
- 
