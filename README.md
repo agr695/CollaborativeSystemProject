@@ -1,14 +1,11 @@
 # Collaborative System Project
 Power line detection Collaborative System
 
-First clone
-  
-    git clone https://github.com/agr695/CollaborativeSystemProject.git
-  
-    git submodule update --init --recursive
-  
-    git config --global alias.update '!git pull && git submodule update --init --recursive && git submodule update --remote'
-  
-In order to update the repository with the submodules:
+In order to run this project it is necessary to install the following dependecies:
 
-    git update
+    ROS: http://wiki.ros.org/kinetic/Installation/Ubuntu
+    MavROS: https://dev.px4.io/en/ros/mavros_installation.html
+    SMBus: https://pypi.org/project/smbus/
+    Video-Stream-openCV: http://wiki.ros.org/video_stream_opencv
+    RapidJson v1.1.0: http://rapidjson.org/
+    
