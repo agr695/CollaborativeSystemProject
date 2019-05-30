@@ -1,4 +1,4 @@
 <launch>
-  <!-- <remap from="/iris/camera/image_raw" to="/webcam/image_raw"/> -->
+   <!--<remap from="/iris/camera/image_raw" to="/webcam/image_raw"/> -->
    <node name="image_processing" pkg="image_processing" type="image_processing_node" output="screen" />
 </launch>

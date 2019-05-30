@@ -26,11 +26,11 @@ class navigation():
 
         self.local_pose = PoseStamped()
 
-        # self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', LaserScan, self.front_sonar, queue_size=1)
-        # self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', LaserScan, self.left_sonar, queue_size=1)
+        self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', LaserScan, self.front_sonar, queue_size=1)
+        self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', LaserScan, self.left_sonar, queue_size=1)
 
-        self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', Int32, self.front_sonar, queue_size=1)
-        self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', Int32, self.left_sonar, queue_size=1)
+        # self.sonar_sub_front = rospy.Subscriber('/iris/sonar_front/scan', Int32, self.front_sonar, queue_size=1)
+        # self.sonar_sub_left = rospy.Subscriber('/iris/sonar_left/scan', Int32, self.left_sonar, queue_size=1)
 
         self.setMode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 
@@ -62,8 +62,8 @@ class navigation():
         self.relative_yaw = msg.Yaw
 
     def front_sonar(self, msg):
-        distance = msg.data/100.0
-        print distance
+        # distance = msg.data/100.0
+        distance = min(msg.ranges)
 
         if distance < 1:                    #we are close to tower so move to side
             self.mode = "avoid"
@@ -73,7 +73,8 @@ class navigation():
             rospy.sleep(self.wait_time)
 
     def left_sonar(self, msg):
-        distance = msg.data/100.0
+        # distance = msg.data/100.0
+        distance = min(msg.ranges)
 
         if distance < 2:                    #we are next to tower so go straight
             self.mode = "next_to_tower"
@@ -102,7 +103,7 @@ class navigation():
             target_pose = TwistStamped()
             target_pose.twist.linear.x = 0.3
             target_pose.twist.linear.y = -self.relative_y * self.Py
-            target_pose.twist.linear.z = -(0.5 - self.relative_z) * self.Pz
+            target_pose.twist.linear.z = -(3 - self.relative_z) * self.Pz
             target_pose.header.frame_id = "FRAME_BODY_OFFSET_NED"  # realtive to body frame
 
             target_pose.twist.angular.z = -self.relative_yaw * self.Pyaw
